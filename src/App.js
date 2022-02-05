@@ -1,25 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import Balance from './components/Balance';
+import IncomeExpenseBox from './components/IncomeExpenseBox';
+import Transactions from './components/Transactions';
+import AddBox from './components/AddBox';
+import { createContext, useState } from "react";
 
-function App() {
+
+export let GlobalContext = createContext();
+
+function App(){
+
+  let [transaction, setTransaction] = useState([]);
+
+
+  function deleteTransaction (data) {
+
+    setTransaction([...data])
+
+  }
+
+  
+  function getData(items) {
+
+    setTransaction([...transaction, items])
+    
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GlobalContext.Provider value={{getTransaction: transaction, dataAccess: getData, dataDelete: deleteTransaction}}>
+
+      <Header />
+      <div  className='container'>
+        <Balance />
+        <IncomeExpenseBox />
+        <Transactions />
+        <AddBox />
+      </div>
+
+    </GlobalContext.Provider>
   );
 }
-
 export default App;
